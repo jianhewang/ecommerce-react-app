@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { Routes, Route } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 import HomePage from './pages/homepage/homepage.component';
 
 const HatsPage = () => (
@@ -12,10 +12,10 @@ const HatsPage = () => (
 function App() {
   return (
     <div>
-      <Routes>
-        <Route exact path='/' element={<HomePage />}></Route>
-        <Route path='/hats' element={<HatsPage />}></Route>
-      </Routes>
+      <Switch>
+        <Route exact path='/' component={HomePage}></Route>
+        <Route path='/hats' component={HatsPage}></Route>
+      </Switch>
     </div>
   );
 }
