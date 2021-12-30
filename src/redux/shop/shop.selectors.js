@@ -17,7 +17,7 @@ export const selectCollections = createSelector(
 
 export const selectCollectionsForPreview = createSelector(
     [selectCollections],
-    collections => Object.keys(collections).map(key => collections[key])
+    collections => collections ?  Object.keys(collections).map(key => collections[key]) : []
 )
 
 // find collection id matching the url parameter of our collection id map
@@ -28,8 +28,7 @@ export const selectCollectionsForPreview = createSelector(
 //     )
 
 // when we have a set of data as object not array, we can simplify the method
-export const selectCollection = collectionParam => 
-    createSelector(
-        [selectCollections],
-        collections => collections[collectionParam]
-    )
+export const selectCollection = (collectionUrlParam) =>
+  createSelector([selectCollections], (collections) =>
+    collections ? collections[collectionUrlParam] : null
+  );
