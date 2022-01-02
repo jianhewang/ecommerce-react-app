@@ -1,14 +1,17 @@
 import React from "react";
 // import SHOP_DATA from "./shop.data";
 import { connect } from "react-redux";
-import { createStructuredSelector } from "reselect";
+//import { createStructuredSelector } from "reselect";
 // import { selectShopCollections } from "../../redux/shop/shop.selectors";
 // import CollectionPreview from "../../components/collection-preview/collection-preview.component";
 //import { firestore, convertCollectionsSnapshotToMap } from "../../firebase/firebase.utils";
 import { Route } from "react-router-dom";
 
 //import { updateCollections } from "../../redux/shop/shop.actions";
-import { fetchCollectionsStartAsync } from '../../redux/shop/shop.actions';
+// thunk
+//import { fetchCollectionsStartAsync } from '../../redux/shop/shop.actions';
+// saga
+import { fetchCollectionsStart } from '../../redux/shop/shop.actions';
 //import { selectIsCollectionFetching, selectIsCollectionsLoaded } from "../../redux/shop/shop.selectors";
 
 //import WithSpinner from "../../components/with-spinner/with-spinner.component";
@@ -40,8 +43,10 @@ class ShopPage extends React.Component {
           //   this.setState({ loading: false });
           // });
 
-          const { fetchCollectionsStartAsync } = this.props;
-          fetchCollectionsStartAsync();
+          //const { fetchCollectionsStartAsync } = this.props;
+          const { fetchCollectionsStart } = this.props;
+          //fetchCollectionsStartAsync();
+          fetchCollectionsStart();
 
         }
       
@@ -81,7 +86,8 @@ class ShopPage extends React.Component {
 const mapDispatchToProps = dispatch => ({
   // updateCollections: collectionsMap =>
   //   dispatch(updateCollections(collectionsMap))
-  fetchCollectionsStartAsync: () => dispatch(fetchCollectionsStartAsync())
+  // fetchCollectionsStartAsync: () => dispatch(fetchCollectionsStartAsync())
+  fetchCollectionsStart: () => dispatch(fetchCollectionsStart())
 });
 
 export default connect(
