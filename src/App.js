@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import './App.css';
@@ -19,59 +19,77 @@ import CheckoutPage from './pages/checkout/checkout.component';
 //import { selectCollectionsForPreview } from './redux/shop/shop.selectors';
 import { checkUserSession } from "./redux/user/user.actions"
 
-class App extends React.Component {
-  unsubscribeFromAuth = null;
+const App = ({ checkUserSession, currentUser }) => {
+  useEffect(() => {
+    checkUserSession()
+  }, [checkUserSession]);
 
-  componentDidMount() {
-    const { checkUserSession } = this.props;
-    checkUserSession();
-    //const { setCurrentUser } = this.props;
-    //const {setCurrentUser, collectionsArray} = this.props;
-    // make request to firestore API
-    // this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
-    //   //createUserProfileDocument(user);
-    //   //this.setState({ currentUser: user });
-
-    //   //console.log(user);
-
-    //   // pass whole user object with uid 
-    //   if (userAuth){
-    //     const userRef = await createUserProfileDocument(userAuth);
-
-    //     // listen to the changes of values
-    //     userRef.onSnapshot(snapShot => {
-    //       // call redux method to set current object
-    //       setCurrentUser({
-    //           id: snapShot.id,
-    //           ...snapShot.data()
-    //       });
-    //     });
-    //   }
-
-    //   setCurrentUser(userAuth);
-      //addCollectionAndDocuments('collections', collectionsArray.map(({title, items}) => ({title, items})) )
-    // });
-  }
-
-  componentWillUnmount() {
-    this.unsubscribeFromAuth();
-  }
-
-  render(){
-
-    return (
-      <div>
-        <Header />
-        <Switch>
-          <Route exact path='/' component={HomePage}></Route>
-          <Route path='/shop' component={ShopPage}></Route>
-          <Route exact path='/checkout' component={CheckoutPage}></Route>
-          <Route exact path='/signin' render={() => this.props.currentUser ? (<Redirect to='/' />) : (<SignInAndSignUpPage />) }></Route>
-        </Switch>
-      </div>
-    );
-  }
+  return (
+    <div>
+      <Header />
+      <Switch>
+        <Route exact path='/' component={HomePage}></Route>
+        <Route path='/shop' component={ShopPage}></Route>
+        <Route exact path='/checkout' component={CheckoutPage}></Route>
+        <Route exact path='/signin' render={() => currentUser ? (<Redirect to='/' />) : (<SignInAndSignUpPage />) }></Route>
+      </Switch>
+    </div>
+  );
 }
+
+// class App extends React.Component {
+//   unsubscribeFromAuth = null;
+
+//   componentDidMount() {
+//     const { checkUserSession } = this.props;
+//     checkUserSession();
+//     //const { setCurrentUser } = this.props;
+//     //const {setCurrentUser, collectionsArray} = this.props;
+//     // make request to firestore API
+//     // this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
+//     //   //createUserProfileDocument(user);
+//     //   //this.setState({ currentUser: user });
+
+//     //   //console.log(user);
+
+//     //   // pass whole user object with uid 
+//     //   if (userAuth){
+//     //     const userRef = await createUserProfileDocument(userAuth);
+
+//     //     // listen to the changes of values
+//     //     userRef.onSnapshot(snapShot => {
+//     //       // call redux method to set current object
+//     //       setCurrentUser({
+//     //           id: snapShot.id,
+//     //           ...snapShot.data()
+//     //       });
+//     //     });
+//     //   }
+
+//     //   setCurrentUser(userAuth);
+//       //addCollectionAndDocuments('collections', collectionsArray.map(({title, items}) => ({title, items})) )
+//     // });
+//   }
+
+//   componentWillUnmount() {
+//     this.unsubscribeFromAuth();
+//   }
+
+//   render(){
+
+//     return (
+//       <div>
+//         <Header />
+//         <Switch>
+//           <Route exact path='/' component={HomePage}></Route>
+//           <Route path='/shop' component={ShopPage}></Route>
+//           <Route exact path='/checkout' component={CheckoutPage}></Route>
+//           <Route exact path='/signin' render={() => this.props.currentUser ? (<Redirect to='/' />) : (<SignInAndSignUpPage />) }></Route>
+//         </Switch>
+//       </div>
+//     );
+//   }
+// }
 
 const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser
