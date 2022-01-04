@@ -25,6 +25,7 @@ import CollectionPageContainer from "../collection/collection.container";
 //const CollectionPageWithSpinner = WithSpinner(CollectionPage);
 
 const ShopPage = ({fetchCollectionsStart, match}) => {
+  
   useEffect(() => {
     fetchCollectionsStart();
   }, [fetchCollectionsStart])

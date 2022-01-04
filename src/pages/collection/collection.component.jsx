@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 
 import CollectionItem from '../../components/collection-item/collection-item.component';
 import { firestore } from '../../firebase/firebase.utils';
@@ -12,7 +13,7 @@ import {
   CollectionItemsContainer
 } from './collection.styles';
 
-const CollectionPage = ({ collection }) => {
+const CollectionPage = () => {
   // useEffect(() => {
   //   console.log('In subscribing');
   //   const unsubscribeFromCollections = firestore
@@ -24,6 +25,12 @@ const CollectionPage = ({ collection }) => {
   //     unsubscribeFromCollections();
   //   }
   // })
+
+  // const params = useParams();
+  // const collection = useSelector(selectCollection(params.collectionId));
+
+  const { collectionId } = useParams();
+  const collection = useSelector(selectCollection(collectionId));
 
   const { title, items } = collection;
   return (
@@ -42,4 +49,5 @@ const mapStateToProps = (state, ownProps) => ({
   collection: selectCollection(ownProps.match.params.collectionId)(state)
 });
 
-export default connect(mapStateToProps)(CollectionPage);
+//export default connect(mapStateToProps)(CollectionPage);
+export default CollectionPage;
