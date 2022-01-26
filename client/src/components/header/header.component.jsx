@@ -11,7 +11,12 @@ import CartDropdown from '../cart-dropdown/cart-dropdown.component';
 import { ReactComponent as Logo } from '../../assets/crown.svg';
 
 //import './header.styles.scss';
-import { HeaderContainer, LogoContainer, OptionContainer, OptionLink, OptionDiv } from './header.styles';
+import {
+  HeaderContainer,
+  LogoContainer,
+  OptionsContainer,
+  OptionLink
+} from './header.styles';
 import { signOutStart } from '../../redux/user/user.actions';
 
 const Header = ({ currentUser, hidden, signOutStart }) => (
@@ -19,28 +24,19 @@ const Header = ({ currentUser, hidden, signOutStart }) => (
     <LogoContainer to='/'>
       <Logo className='logo' />
     </LogoContainer>
-    <OptionContainer>
-      <OptionLink to='/shop'>
-        SHOP
-      </OptionLink>
-      <OptionLink to='/'>
-        CONTACT
-      </OptionLink>
+    <OptionsContainer>
+      <OptionLink to='/shop'>SHOP</OptionLink>
+      {/* <OptionLink to='/shop'>CONTACT</OptionLink> */}
       {currentUser ? (
-        <OptionDiv onClick={signOutStart}>
+        <OptionLink as='div' onClick={signOutStart}>
           SIGN OUT
-        </OptionDiv>
-      ) : (
-        <OptionLink to='/signin'>
-          SIGN IN
         </OptionLink>
+      ) : (
+        <OptionLink to='/signin'>SIGN IN</OptionLink>
       )}
       <CartIcon />
-    </OptionContainer>
-    {
-      hidden ? null :
-      <CartDropdown />
-    }
+    </OptionsContainer>
+    {hidden ? null : <CartDropdown />}
   </HeaderContainer>
 );
 

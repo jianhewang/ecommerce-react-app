@@ -1,3 +1,4 @@
+// express is a lib to allow us to build an API server
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
@@ -11,11 +12,13 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const app = express();
 const port = process.env.PORT || 5000;
 
+// process the request body and convert to json
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 
 if(process.env.NODE_ENV === 'production'){
+    // serve all static files(html, css, js) in the build
     app.use(express.static(path.join(__dirname, 'client/build')));
 
     app.get('*', function(req, res){

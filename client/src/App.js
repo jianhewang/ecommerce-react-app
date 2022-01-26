@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { lazy, Suspense, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import './App.css';
+// import './App.css';
+
+import { GlobalStyle } from './global.styles';
 
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { connect, useDispatch, useSelector } from 'react-redux';
@@ -9,16 +11,23 @@ import { connect, useDispatch, useSelector } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { selectCurrentUser } from './redux/user/user.selectors';
 
-import HomePage from './pages/homepage/homepage.component';
-import ShopPage from './pages/shop/shop.component';
+//import HomePage from './pages/homepage/homepage.component';
+//import ShopPage from './pages/shop/shop.component';
 import Header from './components/header/header.component';
-import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component';
-import CheckoutPage from './pages/checkout/checkout.component';
+import Spinner from './components/spinner/spinner.components';
+import ErrorBoundary from './components/error-boundry/error-boundary.component';
+// import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component';
+// import CheckoutPage from './pages/checkout/checkout.component';
 //import { auth, createUserProfileDocument } from './firebase/firebase.utils';
 //import { auth, createUserProfileDocument, addCollectionAndDocuments } from './firebase/firebase.utils';
 //import { setCurrentUser } from './redux/user/user.actions';
 //import { selectCollectionsForPreview } from './redux/shop/shop.selectors';
 import { checkUserSession } from "./redux/user/user.actions"
+
+const HomePage = lazy(() => import('./pages/homepage/homepage.component'));
+const ShopPage = lazy(() => import('./pages/shop/shop.component'));
+const SignInAndSignUpPage = lazy(() => import('./pages/sign-in-and-sign-up/sign-in-and-sign-up.component'));
+const CheckoutPage = lazy(() => import('./pages/checkout/checkout.component'));
 
 //const App = ({ checkUserSession, currentUser }) => {
 const App = () => {
@@ -34,12 +43,17 @@ const App = () => {
 
   return (
     <div>
+      <GlobalStyle />
       <Header />
       <Switch>
-        <Route exact path='/' component={HomePage}></Route>
-        <Route path='/shop' component={ShopPage}></Route>
-        <Route exact path='/checkout' component={CheckoutPage}></Route>
-        <Route exact path='/signin' render={() => currentUser ? (<Redirect to='/' />) : (<SignInAndSignUpPage />) }></Route>
+        <ErrorBoundary>
+          <Suspense fallback={<div></div>}>
+            <Route exact path='/' component={HomePage}></Route>
+            <Route path='/shop' component={ShopPage}></Route>
+            <Route exact path='/checkout' component={CheckoutPage}></Route>
+            <Route exact path='/signin' render={() => currentUser ? (<Redirect to='/' />) : (<SignInAndSignUpPage />) }></Route>
+          </Suspense>
+        </ErrorBoundary>
       </Switch>
     </div>
   );
